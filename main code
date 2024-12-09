@@ -1,0 +1,80 @@
+class Graph {
+public:
+    int V; // Number of vertices
+    Node** adjList;
+
+    Graph(int vertices) {
+        V = vertices;
+        adjList = new Node*[V];
+        for (int i = 0; i < V; i++) {
+            adjList[i] = NULL;
+        }
+    }
+
+    // Add edge to the graph
+    void addEdge(int from, int to, int weight) {
+        Node* newNode = new Node;
+        newNode->vertex = to;
+        newNode->weight = weight;
+        newNode->next = adjList[from];
+        adjList[from] = newNode;
+
+        // Undirected graph: add edge both ways
+        newNode = new Node;
+        newNode->vertex = from;
+        newNode->weight = weight;
+        newNode->next = adjList[to];
+        adjList[to] = newNode;
+    }
+
+    // Dijkstra's Algorithm
+    int dijkstra(int src, int dest) {
+        int dist[V];        // Stores shortest distances
+        bool visited[V];    // Tracks visited nodes
+
+        for (int i = 0; i < V; i++) {
+            dist[i] = INT_MAX;
+            visited[i] = false;
+        }
+        dist[src] = 0; // Distance to the source is 0
+
+        for (int count = 0; count < V - 1; count++) {
+            int u = -1;
+            for (int i = 0; i < V; i++) {
+                if (!visited[i] && (u == -1 || dist[i] < dist[u])) {
+                    u = i;
+                }
+            }
+
+            if (u == -1) break; // All reachable nodes have been visited
+
+            visited[u] = true;
+
+            Node* temp = adjList[u];
+            while (temp != NULL) {
+                int v = temp->vertex;
+                int weight = temp->weight;
+
+                if (!visited[v] && dist[u] != INT_MAX && dist[u] + weight < dist[v]) {
+                    dist[v] = dist[u] + weight;
+                }
+                temp = temp->next;
+            }
+        }
+
+        return dist[dest];
+    }
+
+    // Destructor to clean up memory
+    ~Graph() {
+        for (int i = 0; i < V; i++) {
+            Node* temp = adjList[i];
+            while (temp != NULL) {
+                Node* toDelete = temp;
+                temp = temp->next;
+                delete toDelete;
+            }
+        }
+        delete[] adjList;
+    }
+};
