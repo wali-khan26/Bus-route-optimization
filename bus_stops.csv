@@ -1,0 +1,51 @@
+stop_name,From_Stop,To_Stop,Distance
+Main Street,0,1,10
+Park Avenue,0,2,15
+Central Plaza,0,3,20
+Oakwood Station,0,4,25
+Riverside Drive,1,2,8
+Pinehill Junction,1,3,12
+Sunset Boulevard,1,5,18
+City Mall,1,6,10
+Green Valley,2,3,7
+Meadowbrook,2,4,5
+Elm Street,2,6,12
+Lakeview Park,2,7,15
+Springdale,3,4,10
+Maplewood,3,5,5
+West End,3,6,8
+Downtown Hub,3,8,20
+Rose Garden,4,5,8
+King’s Square,4,6,14
+Broadway Crossing,4,7,9
+Hillcrest Lane,4,8,15
+Northgate,5,6,11
+Silverstone,5,7,16
+Pine Grove,5,8,7
+Crystal Towers,5,9,10
+Old Town Road,6,7,12
+Eagle’s Nest,6,8,6
+Falcon Ridge,6,9,13
+Beacon Hill,6,10,20
+Redstone Park,7,8,5
+Skyview Heights,7,9,10
+Forest Pines,7,10,18
+Silver Creek,8,9,8
+Mountain View,8,10,12
+Coastal Line,8,11,15
+Summit Point,9,10,7
+Riverbend,9,11,9
+Harbourfront,9,12,20
+Seaside Drive,10,11,6
+Bluebell Street,10,12,8
+Ashwood Park,10,13,18
+Meadow Lane,11,12,5
+Willow Creek,11,13,12
+Maple Grove,11,14,14
+Bridgewater,12,13,9
+City Centre,12,14,7
+Northern Lights,13,14,10
+Sunrise Valley,13,15,18
+Autumn Way,14,15,12
+Birchwood Road,14,16,10
+Horizon Park,15,16,15
