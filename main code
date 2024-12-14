@@ -1,3 +1,128 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <unordered_set>
+#include <vector>
+#include <algorithm> // For find
+#include <stdexcept> // For exception handling
+
+using namespace std;
+
+class FileHandler {
+private:
+    string filePath;
+
+public:
+    // Constructor to initialize file path
+    FileHandler(const string& path) : filePath(path) {}
+
+    // Function to convert string to integer with error handling
+    int stringToInt(const string& str) const {
+        try {
+            return stoi(str);
+        } catch (invalid_argument& e) {
+            cerr << "Invalid number format: " << str << ". Setting to 0.\n";
+            return 0;
+        } catch (out_of_range& e) {
+            cerr << "Number out of range: " << str << ". Setting to 0.\n";
+            return 0;
+        }
+    }
+
+    // Function to count unique stops using unordered_set for efficiency
+    int countUniqueStops() const {
+        ifstream file(filePath);
+        string line;
+        unordered_set<int> stops;
+
+        if (!file.is_open()) {
+            throw runtime_error("Error opening file for counting unique stops!");
+        }
+
+        getline(file, line); // Skip the header
+        while (getline(file, line)) {
+            stringstream ss(line);
+            string from, to, distance;
+            if (!getline(ss, from, ',') || !getline(ss, to, ',') || !getline(ss, distance, ',')) {
+                cerr << "Malformed line: " << line << ". Skipping.\n";
+                continue; // Skip malformed lines
+            }
+
+            int fromStop = stringToInt(from);
+            int toStop = stringToInt(to);
+
+            stops.insert(fromStop);
+            stops.insert(toStop);
+        }
+
+        file.close();
+        return stops.size();
+    }
+
+    // Function to load graph data from the CSV file
+    // Assumes that Graph class and addEdge method are defined elsewhere
+    void loadGraphFromFile(class Graph& graph) const {
+        ifstream file(filePath);
+        string line;
+
+        if (!file.is_open()) {
+            throw runtime_error("Error opening file for loading graph data!");
+        }
+
+        getline(file, line); // Skip the header
+        while (getline(file, line)) {
+            stringstream ss(line);
+            string from, to, distance;
+            if (!getline(ss, from, ',') || !getline(ss, to, ',') || !getline(ss, distance, ',')) {
+                cerr << "Malformed line: " << line << ". Skipping.\n";
+                continue; // Skip malformed lines
+            }
+
+            int fromStop = stringToInt(from);
+            int toStop = stringToInt(to);
+            int dist = stringToInt(distance);
+
+            if (fromStop < 0 || toStop < 0 || dist < 0) {
+                cerr << "Invalid data in line: " << line << ". Skipping.\n";
+                continue; // Skip invalid data
+            }
+
+            graph.addEdge(fromStop, toStop, dist);
+        }
+
+        file.close();
+    }
+
+    // Function to print all bus stop data from the CSV file
+    void printAllBusData() const {
+        ifstream file(filePath);
+        string line;
+
+        if (!file.is_open()) {
+            cerr << "Error opening file for reading!\n";
+            return;
+        }
+
+        cout << "Bus Stop Data:\n";
+        cout << "From Stop, To Stop, Distance\n";
+
+        // Optionally, print the header if present
+        getline(file, line); // Skip the header
+        // Uncomment the next line if you want to print the header
+        // cout << line << endl;
+
+        while (getline(file, line)) {
+            cout << line << endl;
+        }
+
+        file.close();
+    }
+};
+
+
+
+
 class Graph {
 public:
     int V; // Number of vertices
@@ -11,7 +136,7 @@ public:
         }
     }
 
-    // Add edge to the graph
+    // Add edge to the graph 
     void addEdge(int from, int to, int weight) {
         Node* newNode = new Node;
         newNode->vertex = to;
