@@ -189,7 +189,32 @@ public:
 
         return dist[dest];
     }
+void addNode() {
+        n++;
+        for (int i = 0; i < matrix.size(); i++) {
+            matrix[i].push_back(INT_MAX); // Add new column
+        }
+        matrix.push_back(vector<int>(n, INT_MAX)); // Add new row
+        matrix[n - 1][n - 1] = 0; // Distance from the new node to itself is 0
+    }
 
+    // Delete a node (bus stop) by index
+    void deleteNode(int nodeIndex) {
+        if (nodeIndex >= n || nodeIndex < 0) {
+            cout << "Invalid node index.\n";
+            return;
+        }
+
+        // Erase the row corresponding to nodeIndex
+        matrix.erase(matrix.begin() + nodeIndex);
+
+        // Erase the column corresponding to nodeIndex in each remaining row
+        for (int i = 0; i < matrix.size(); i++) {
+            matrix[i].erase(matrix[i].begin() + nodeIndex);
+        }
+
+        n--; // Decrease the number of vertices
+    }
     // Destructor to clean up memory
     ~Graph() {
         for (int i = 0; i < V; i++) {
