@@ -230,6 +230,7 @@ void addNode() {
 };
 
 
+
 int main() {
     // File path (replace with your actual file path)
     string filename = "C:\\Users\\Dell\\Desktop\\DSAproject\\bus_stops.csv";
@@ -297,7 +298,65 @@ int main() {
     } while (choice != 6);
 
     // Cleanup memory
- 
+    delete avlRoot;
+    return 0;
+}
+
+void displayMenu() {
+    cout << "\n===== MENU =====\n";
+    cout << "1. Display Graph Adjacency Matrix\n";
+    cout << "2. Display In-Order Traversal of AVL Tree\n";
+    cout << "3. Display Pre-Order Traversal of AVL Tree\n";
+    cout << "4. Display Post-Order Traversal of AVL Tree\n";
+    cout << "5. Delete a Node from AVL Tree\n";
+    cout << "6. Exit\n";
+    cout << "Enter your choice: ";
+}
+
+AVLNode* createAVLTreeFromCSV(const string& filename, Graph& graph) {
+    ifstream file(filename);
+    string line;
+    AVLNode* root = nullptr;
+    map<int, vector<pair<int, int>>> adjacencyList; // Stop ID -> [(Adjacent Stop ID, Distance)]
+    map<int, string> stopNames;                    // Stop ID -> Stop Name
+
+    if (!file.is_open()) {
+        cout << "Error opening file!\n";
+        return nullptr;
+    }
+
+    getline(file, line); // Skip the header
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string stopName, from, to, distance;
+
+        getline(ss, stopName, ',');
+        getline(ss, from, ',');
+        getline(ss, to, ',');
+        getline(ss, distance, ',');
+
+        int fromStop = stoi(from);
+        int toStop = stoi(to);
+        int dist = stoi(distance);
+
+        stopNames[fromStop] = stopName;
+        adjacencyList[fromStop].push_back({toStop, dist});
+        graph.addEdge(fromStop, toStop, dist);
+    }
+    file.close();
+
+    for (const auto& [stopId, neighbors] : adjacencyList) {
+        int totalDistance = 0;
+        int count = neighbors.size();
+        for (const auto& [adjStop, dist] : neighbors) {
+            totalDistance += dist;
+        }
+
+        if (count > 0) {
+            double avgDistance = static_cast<double>(totalDistance) / count;
+            root = insert(root, avgDistance, stopId, stopNames[stopId]);
+        }
+    }
 
     return root;
 }
