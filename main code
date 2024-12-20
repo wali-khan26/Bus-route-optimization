@@ -228,7 +228,13 @@ void addNode() {
         delete[] adjList;
     }
 };
-
+void collectNodes(AVLNode* root, vector<AVLNode*>& nodes) {
+    if (root != NULL) {
+        collectNodes(root->left, nodes);
+        nodes.push_back(root);
+        collectNodes(root->right, nodes);
+    }
+}
 
 
 int main() {
