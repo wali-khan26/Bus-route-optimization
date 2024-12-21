@@ -204,7 +204,76 @@ void addNode() {
             cout << "Invalid node index.\n";
             return;
         }
+// In-order traversal for displaying the tree
+void inOrderTraversal(AVLNode* root) {
+    if (root != NULL) {
+        inOrderTraversal(root->left);
+        cout << "Stop Name: " << root->stopName << ", Average Distance: " << root->avgDistance << "\n";
+        inOrderTraversal(root->right);
+    }
+}
+// Pre-order traversal for AVL Tree
+void preOrderTraversal(AVLNode* root) {
+    if (root != NULL) {
+        cout << "Stop Name: " << root->stopName << ", Average Distance: " << root->avgDistance << "\n";
+        preOrderTraversal(root->left);
+        preOrderTraversal(root->right);
+    }
+}
 
+// Post-order traversal for AVL Tree
+void postOrderTraversal(AVLNode* root) {
+    if (root != NULL) {
+        postOrderTraversal(root->left);
+        postOrderTraversal(root->right);
+        cout << "Stop Name: " << root->stopName << ", Average Distance: " << root->avgDistance << "\n";
+    }
+}
+
+AVLNode* createAVLTreeFromCSV(const string& filename) {
+    ifstream file("C:\\Users\\Dell\\Desktop\\DSAproject\\bus_stops.csv");
+    string line;
+    AVLNode* root = NULL;
+    map<int, vector<pair<int, int> > > adjacencyList; // Stop ID -> [(Adjacent Stop ID, Distance)]
+    map<int, string> stopNames;                    // Stop ID -> Stop Name
+
+    if (!file.is_open()) {
+        cout << "Error opening file!\n";
+        return NULL;
+    }
+}
+void collectNodes(AVLNode* root, vector<AVLNode*>& nodes) {
+    if (root != NULL) {
+        collectNodes(root->left, nodes);
+        nodes.push_back(root);
+        collectNodes(root->right, nodes);
+    }
+}
+void bubbleSort(vector<AVLNode*>& nodes) {
+    int n = nodes.size();
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (nodes[j]->avgDistance > nodes[j + 1]->avgDistance) {
+                swap(nodes[j], nodes[j + 1]);
+            }
+        }
+    }
+}
+
+void insertionSort(vector<AVLNode*>& nodes) {
+    int n = nodes.size();
+    for (int i = 1; i < n; i++) {
+        AVLNode* key = nodes[i];
+        int j = i - 1;
+        while (j >= 0 && nodes[j]->avgDistance > key->avgDistance) {
+            nodes[j + 1] = nodes[j];
+            j--;
+        }
+        nodes[j + 1] = key;
+    }
+}
+
+void select
         // Erase the row corresponding to nodeIndex
         matrix.erase(matrix.begin() + nodeIndex);
 
